@@ -33,8 +33,12 @@ public class RacingController {
   }
 
   private int parsePositiveInt(String raw) {
+    if (raw == null || raw.trim().isEmpty()) {
+      throw new IllegalArgumentException(ErrorMessages.NUMBER_OF_MOVES);
+    }
+
     try {
-      int n = Integer.parseInt(raw);
+      int n = Integer.parseInt(raw.trim());
       if (n <= 0) {
         throw new IllegalArgumentException(ErrorMessages.NUMBER_OF_MOVES);
       }

@@ -1,11 +1,17 @@
 package domain.car;
 
-import static common.ErrorMessages.*;
+import static common.ErrorMessages.NAME_DUPLICATION;
+import static common.ErrorMessages.NAME_REQUIRED;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import domain.move.MovePolicy;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Cars {
+
   private final List<Car> values;
 
   private Cars(List<Car> values) {
@@ -19,12 +25,6 @@ public class Cars {
 
     String[] parts = raw.split(",");
 
-    for (String p : parts) {
-      if (p.isEmpty()) {
-        throw new IllegalArgumentException(NAME_EMPTY);
-      }
-    }
-
     Set<String> seen = new HashSet<>();
     for (String p : parts) {
       if (!seen.add(p)) {
@@ -32,26 +32,33 @@ public class Cars {
       }
     }
 
-    List<Car> list = Arrays.stream(parts)
-        .map(Car::of)
-        .collect(Collectors.toList());
-
+    List<Car> list = new ArrayList<>();
+    for (String name : parts) {
+      list.add(Car.of(name));
+    }
     return new Cars(list);
   }
 
-  public void moveAll(domain.move.MovePolicy policy) {
+  public void moveAll(MovePolicy policy) {
     values.forEach(c -> c.moveCar(policy));
   }
 
-  public List<Car> asList() { return values; }
+  public List<Car> asList() {
+    return values;
+  }
 
   public List<Car> findWinners() {
     List<Car> winners = new ArrayList<>();
     int max = 0;
     for (Car car : values) {
       int d = car.getDistance();
-      if (d > max) { winners.clear(); winners.add(car); max = d; }
-      else if (d == max) { winners.add(car); }
+      if (d > max) {
+        winners.clear();
+        winners.add(car);
+        max = d;
+      } else if (d == max) {
+        winners.add(car);
+      }
     }
     return winners;
   }

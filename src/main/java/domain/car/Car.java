@@ -1,8 +1,13 @@
 package domain.car;
 
-import static common.ErrorMessages.*;
+import static common.ErrorMessages.NAME_EMPTY;
+import static common.ErrorMessages.NAME_LENGTH;
+import static common.ErrorMessages.NAME_REQUIRED;
+
+import domain.move.MovePolicy;
 
 public class Car {
+
   private int distance;
   private final String name;
 
@@ -12,8 +17,11 @@ public class Car {
   }
 
   public static Car of(String name) {
-    if (name == null || name.isEmpty()) {
+    if (name == null) {
       throw new IllegalArgumentException(NAME_REQUIRED);
+    }
+    if (name.isEmpty()) {
+      throw new IllegalArgumentException(NAME_EMPTY);
     }
     if (name.contains(" ")) {
       throw new IllegalArgumentException(NAME_EMPTY);
@@ -24,10 +32,17 @@ public class Car {
     return new Car(name);
   }
 
-  public void moveCar(domain.move.MovePolicy policy) {
-    if (policy.canMove()) distance++;
+  public void moveCar(MovePolicy policy) {
+    if (policy.canMove()) {
+      distance++;
+    }
   }
 
-  public String getName() { return name; }
-  public int getDistance() { return distance; }
+  public String getName() {
+    return name;
+  }
+
+  public int getDistance() {
+    return distance;
+  }
 }
