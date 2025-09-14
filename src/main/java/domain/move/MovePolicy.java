@@ -6,7 +6,7 @@ public class MovePolicy {
   private static final int DEFAULT_MOVE_NUMBER = 4;
 
   public boolean canMove() {
-    int number = Randoms.pickNumberInRange(0, 9);
-    return number >= DEFAULT_MOVE_NUMBER;
+    int randomNumber = Randoms.pickNumberInRange(0, 9);
+    return randomNumber >= DEFAULT_MOVE_NUMBER;
   }
 }

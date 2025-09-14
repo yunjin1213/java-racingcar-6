@@ -4,7 +4,6 @@ import common.ErrorMessages;
 import domain.car.Car;
 import domain.car.Cars;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OutputView {
 
@@ -22,16 +21,22 @@ public class OutputView {
   }
 
   public void printRound(Cars cars) {
-    for (Car car : cars.asList()) {
+    List<Car> list = cars.asList();
+    for (Car car : list) {
       System.out.println(car.getName() + " : " + "-".repeat(car.getDistance()));
     }
     System.out.println();
   }
 
   public void printWinners(List<Car> winners) {
-    String names = winners.stream()
-        .map(Car::getName)
-        .collect(Collectors.joining(", "));
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < winners.size(); i++) {
+      sb.append(winners.get(i).getName());
+      if (i < winners.size() - 1) {
+        sb.append(", ");
+      }
+    }
+    String names = sb.toString();
     System.out.println(ErrorMessages.WINNER_ANNOUNCEMENT + names);
   }
 }
